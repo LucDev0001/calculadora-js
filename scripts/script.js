@@ -43,7 +43,7 @@ function calculate() {
 }
 
 // --- Conversor de Moedas ---
-function convertCurrency() {
+async function convertCurrency() {
   const amount = parseFloat(document.getElementById("amount").value);
   const from = document.getElementById("currency-from").value;
   const to = document.getElementById("currency-to").value;
@@ -54,28 +54,21 @@ function convertCurrency() {
     return;
   }
 
-  // Taxas fixas aproximadas (Ideal seria usar uma API)
-  const rates = {
-    BRL: 1,
-    USD: 0.2, // 1 BRL = 0.20 USD
-    EUR: 0.18, // 1 BRL = 0.18 EUR
-  };
+  resultDiv.innerText = "Buscando cotação atualizada...";
 
-  // Lógica de conversão baseada em BRL
-  // Se converter USD para EUR: USD -> BRL -> EUR
+  try {
+    const response = await fetch(
+      `https://api.exchangerate-api.com/v4/latest/${from}`
+    );
+    const data = await response.json();
+    const rate = data.rates[to];
+    const finalVal = amount * rate;
 
-  let valInBrl = 0;
-
-  if (from === "BRL") valInBrl = amount;
-  else if (from === "USD") valInBrl = amount * 5.0; // Exemplo: 1 USD = 5 BRL
-  else if (from === "EUR") valInBrl = amount * 5.4; // Exemplo: 1 EUR = 5.40 BRL
-
-  let finalVal = 0;
-  if (to === "BRL") finalVal = valInBrl;
-  else if (to === "USD") finalVal = valInBrl / 5.0;
-  else if (to === "EUR") finalVal = valInBrl / 5.4;
-
-  resultDiv.innerText = `${amount} ${from} = ${finalVal.toFixed(2)} ${to}`;
+    resultDiv.innerText = `${amount} ${from} = ${finalVal.toFixed(2)} ${to}`;
+  } catch (error) {
+    console.error("Erro ao buscar cotação:", error);
+    resultDiv.innerText = "Erro de conexão. Verifique sua internet.";
+  }
 }
 
 // --- Calculadora CLT 2024 (Simplificada) ---
