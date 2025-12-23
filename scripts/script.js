@@ -148,3 +148,48 @@ function calculateCompound() {
     <strong>Total em Juros:</strong> R$ ${interest.toFixed(2)}
   `;
 }
+
+// --- Modals (Política, Termos, etc) ---
+function openModal(modalId) {
+  const modal = document.getElementById(modalId);
+  if (modal) {
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+    document.body.style.overflow = "hidden"; // Previne rolagem do fundo
+  }
+}
+
+function closeModal(modalId) {
+  const modal = document.getElementById(modalId);
+  if (modal) {
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+    document.body.style.overflow = "auto"; // Restaura rolagem
+  }
+}
+
+// --- Compartilhamento WhatsApp ---
+function shareOnWhatsApp(toolName) {
+  const url = "https://calc-lucdev.netlify.app/";
+  let message = "";
+
+  switch (toolName) {
+    case "padrao":
+      message = `Confira esta Calculadora Online Gratuita e Simples: ${url}`;
+      break;
+    case "moedas":
+      message = `Veja quanto vale seu dinheiro com este Conversor de Moedas: ${url}`;
+      break;
+    case "clt":
+      message = `Calcule seu Salário Líquido 2024 com esta calculadora CLT: ${url}`;
+      break;
+    case "financeira":
+      message = `Simule seus investimentos com esta Calculadora de Juros Compostos: ${url}`;
+      break;
+    default:
+      message = `Ferramentas Financeiras e Trabalhistas Gratuitas: ${url}`;
+  }
+
+  const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+  window.open(whatsappUrl, "_blank");
+}
