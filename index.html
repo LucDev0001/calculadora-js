@@ -63,6 +63,9 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <!-- Chart.js (Para Gráficos) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <!-- Script do Google AdSense -->
     <script
       async
@@ -497,6 +500,9 @@
                   <option value="BRL">Real (BRL)</option>
                   <option value="USD">Dólar (USD)</option>
                   <option value="EUR">Euro (EUR)</option>
+                  <option value="GBP">Libra (GBP)</option>
+                  <option value="BTC">Bitcoin (BTC)</option>
+                  <option value="ETH">Ethereum (ETH)</option>
                 </select>
               </div>
               <div>
@@ -512,6 +518,9 @@
                   <option value="USD">Dólar (USD)</option>
                   <option value="BRL">Real (BRL)</option>
                   <option value="EUR">Euro (EUR)</option>
+                  <option value="GBP">Libra (GBP)</option>
+                  <option value="BTC">Bitcoin (BTC)</option>
+                  <option value="ETH">Ethereum (ETH)</option>
                 </select>
               </div>
             </div>
@@ -563,6 +572,11 @@
               </svg>
               Compartilhar no WhatsApp
             </button>
+          </div>
+
+          <!-- Área do Gráfico -->
+          <div class="mt-8">
+            <canvas id="currencyChart" class="w-full h-64"></canvas>
           </div>
         </div>
         <article class="mt-8 bg-white rounded-xl p-6 shadow-sm text-gray-600">

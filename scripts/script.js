@@ -42,6 +42,9 @@ function calculate() {
   }
 }
 
+// Variável global para o gráfico
+let chartInstance = null;
+
 // --- Conversor de Moedas ---
 async function convertCurrency() {
   const amount = parseFloat(document.getElementById("amount").value);
@@ -65,9 +68,65 @@ async function convertCurrency() {
     const finalVal = amount * rate;
 
     resultDiv.innerText = `${amount} ${from} = ${finalVal.toFixed(2)} ${to}`;
+
+    // Atualizar o gráfico
+    await updateChart(from, to);
   } catch (error) {
     console.error("Erro ao buscar cotação:", error);
     resultDiv.innerText = "Erro de conexão. Verifique sua internet.";
+  }
+}
+
+// --- Função para Atualizar o Gráfico ---
+async function updateChart(from, to) {
+  const ctx = document.getElementById("currencyChart").getContext("2d");
+
+  // Destruir gráfico anterior se existir
+  if (chartInstance) {
+    chartInstance.destroy();
+  }
+
+  try {
+    // API CryptoCompare para histórico (Funciona para Fiat e Cripto)
+    // Limit=30 pega os últimos 30 dias
+    const response = await fetch(
+      `https://min-api.cryptocompare.com/data/v2/histoday?fsym=${from}&tsym=${to}&limit=30`
+    );
+    const data = await response.json();
+    const history = data.Data.Data;
+
+    const labels = history.map((item) => {
+      const date = new Date(item.time * 1000);
+      return `${date.getDate()}/${date.getMonth() + 1}`;
+    });
+
+    const values = history.map((item) => item.close);
+
+    chartInstance = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: `Variação ${from} para ${to} (30 Dias)`,
+            data: values,
+            borderColor: "#f97316", // Orange-500
+            backgroundColor: "rgba(249, 115, 22, 0.1)",
+            borderWidth: 2,
+            fill: true,
+            tension: 0.4, // Curva suave
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: true },
+        },
+      },
+    });
+  } catch (error) {
+    console.error("Erro ao carregar gráfico:", error);
   }
 }
 
