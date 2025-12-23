@@ -5,141 +5,213 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Calculadora online simples e responsiva desenvolvida em JavaScript."
+      content="Ferramenta completa: Calculadora Online, Conversor de Moedas, Cálculo de Salário Líquido (CLT 2024) e Juros Compostos. Grátis e rápido."
     />
-    <title>Calculadora</title>
+    <meta
+      name="keywords"
+      content="calculadora, clt, salario liquido, conversor moedas, juros compostos, finanças, online"
+    />
+    <title>Calc LucDev - Calculadoras Financeiras e Trabalhistas</title>
+
+    <!-- Favicons -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://cdn-icons-png.flaticon.com/512/2344/2344132.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      href="https://cdn-icons-png.flaticon.com/512/2344/2344132.png"
+    />
+
     <link rel="stylesheet" href="styles/style.css" />
+
     <!-- Script do Google AdSense -->
     <script
       async
       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6337009068819903"
       crossorigin="anonymous"
     ></script>
-    <style>
-      /* CSS Crítico para Responsividade e Layout Mobile */
-      body {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-        margin: 0;
-        background-color: #f4f4f4;
-        font-family: sans-serif;
-      }
-      .calculator {
-        width: 100%;
-        max-width: 320px;
-        background: #fff;
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      }
-      #display {
-        width: 100%;
-        height: 60px;
-        background-color: #222;
-        color: #fff;
-        font-size: 2rem;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        padding: 0 15px;
-        border-radius: 6px;
-        margin-bottom: 15px;
-        box-sizing: border-box;
-        overflow-x: auto;
-      }
-      .buttons {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 10px;
-      }
-      button {
-        padding: 15px;
-        font-size: 1.25rem;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        background-color: #e0e0e0;
-        transition: background 0.2s;
-      }
-      button:active {
-        transform: scale(0.95);
-      }
-      .operator {
-        background-color: #ebae34;
-        color: white;
-      }
-      .clear {
-        grid-column: span 4;
-        background-color: #ff5252;
-        color: white;
-        font-weight: bold;
-      }
-      .ad-container {
-        margin-top: 20px;
-        width: 100%;
-        max-width: 320px;
-        text-align: center;
-      }
-    </style>
   </head>
   <body>
-    <main class="calculator">
-      <div id="display">0</div>
-      <div class="buttons">
-        <button onclick="appendToDisplay('7')">7</button>
-        <button onclick="appendToDisplay('8')">8</button>
-        <button onclick="appendToDisplay('9')">9</button>
-        <button
-          onclick="appendToDisplay('/')"
-          class="operator"
-          aria-label="Dividir"
-        >
-          /
+    <header>
+      <h1>Calc LucDev</h1>
+      <nav>
+        <button class="tab-btn active" onclick="openTab('padrao')">
+          Padrão
         </button>
+        <button class="tab-btn" onclick="openTab('moedas')">Moedas</button>
+        <button class="tab-btn" onclick="openTab('clt')">Salário CLT</button>
+        <button class="tab-btn" onclick="openTab('financeira')">Juros</button>
+      </nav>
+    </header>
 
-        <button onclick="appendToDisplay('4')">4</button>
-        <button onclick="appendToDisplay('5')">5</button>
-        <button onclick="appendToDisplay('6')">6</button>
-        <button
-          onclick="appendToDisplay('*')"
-          class="operator"
-          aria-label="Multiplicar"
-        >
-          *
-        </button>
+    <main class="container">
+      <!-- TAB: Calculadora Padrão -->
+      <section id="padrao" class="tab-content active">
+        <div class="calculator">
+          <div id="display">0</div>
+          <div class="buttons">
+            <button onclick="appendToDisplay('7')">7</button>
+            <button onclick="appendToDisplay('8')">8</button>
+            <button onclick="appendToDisplay('9')">9</button>
+            <button
+              onclick="appendToDisplay('/')"
+              class="operator"
+              aria-label="Dividir"
+            >
+              /
+            </button>
 
-        <button onclick="appendToDisplay('1')">1</button>
-        <button onclick="appendToDisplay('2')">2</button>
-        <button onclick="appendToDisplay('3')">3</button>
-        <button
-          onclick="appendToDisplay('-')"
-          class="operator"
-          aria-label="Subtrair"
-        >
-          -
-        </button>
+            <button onclick="appendToDisplay('4')">4</button>
+            <button onclick="appendToDisplay('5')">5</button>
+            <button onclick="appendToDisplay('6')">6</button>
+            <button
+              onclick="appendToDisplay('*')"
+              class="operator"
+              aria-label="Multiplicar"
+            >
+              *
+            </button>
 
-        <button onclick="appendToDisplay('0')">0</button>
-        <button onclick="appendToDisplay('.')">.</button>
-        <button onclick="calculate()" aria-label="Calcular">=</button>
-        <button
-          onclick="appendToDisplay('+')"
-          class="operator"
-          aria-label="Somar"
-        >
-          +
-        </button>
+            <button onclick="appendToDisplay('1')">1</button>
+            <button onclick="appendToDisplay('2')">2</button>
+            <button onclick="appendToDisplay('3')">3</button>
+            <button
+              onclick="appendToDisplay('-')"
+              class="operator"
+              aria-label="Subtrair"
+            >
+              -
+            </button>
 
-        <button onclick="clearDisplay()" class="clear">C</button>
-      </div>
+            <button onclick="appendToDisplay('0')">0</button>
+            <button onclick="appendToDisplay('.')">.</button>
+            <button onclick="calculate()" aria-label="Calcular">=</button>
+            <button
+              onclick="appendToDisplay('+')"
+              class="operator"
+              aria-label="Somar"
+            >
+              +
+            </button>
+
+            <button onclick="clearDisplay()" class="clear">C</button>
+          </div>
+        </div>
+        <article class="seo-content">
+          <h2>Calculadora Online Simples</h2>
+          <p>
+            Utilize nossa calculadora online gratuita para realizar operações
+            matemáticas básicas com rapidez. Ideal para contas do dia a dia,
+            estudos e conferências rápidas.
+          </p>
+        </article>
+      </section>
+
+      <!-- TAB: Conversor de Moedas -->
+      <section id="moedas" class="tab-content">
+        <div class="tool-card">
+          <h2>Conversor de Moedas</h2>
+          <div class="form-group">
+            <label for="amount">Valor:</label>
+            <input type="number" id="amount" placeholder="Ex: 100" />
+          </div>
+          <div class="form-group">
+            <label for="currency-from">De:</label>
+            <select id="currency-from">
+              <option value="BRL">Real (BRL)</option>
+              <option value="USD">Dólar (USD)</option>
+              <option value="EUR">Euro (EUR)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="currency-to">Para:</label>
+            <select id="currency-to">
+              <option value="USD">Dólar (USD)</option>
+              <option value="BRL">Real (BRL)</option>
+              <option value="EUR">Euro (EUR)</option>
+            </select>
+          </div>
+          <button class="action-btn" onclick="convertCurrency()">
+            Converter
+          </button>
+          <div id="currency-result" class="result-box"></div>
+        </div>
+        <article class="seo-content">
+          <h3>Como funciona a conversão?</h3>
+          <p>
+            Esta ferramenta utiliza taxas de câmbio aproximadas para converter
+            valores entre Real, Dólar e Euro. Essencial para quem planeja
+            viagens ou compras internacionais.
+          </p>
+        </article>
+      </section>
+
+      <!-- TAB: Calculadora CLT -->
+      <section id="clt" class="tab-content">
+        <div class="tool-card">
+          <h2>Cálculo de Salário Líquido (CLT 2024)</h2>
+          <div class="form-group">
+            <label for="salary">Salário Bruto (R$):</label>
+            <input type="number" id="salary" placeholder="Ex: 3000" />
+          </div>
+          <div class="form-group">
+            <label for="dependents">Número de Dependentes:</label>
+            <input type="number" id="dependents" value="0" />
+          </div>
+          <button class="action-btn" onclick="calculateCLT()">
+            Calcular Salário Líquido
+          </button>
+          <div id="clt-result" class="result-box"></div>
+        </div>
+        <article class="seo-content">
+          <h3>Entenda os Descontos da CLT</h3>
+          <p>
+            O cálculo do salário líquido envolve descontos obrigatórios como o
+            INSS (Previdência Social) e o IRRF (Imposto de Renda). Nossa
+            calculadora utiliza a tabela progressiva atualizada de 2024 para
+            entregar o resultado exato do seu holerite.
+          </p>
+        </article>
+      </section>
+
+      <!-- TAB: Calculadora Financeira -->
+      <section id="financeira" class="tab-content">
+        <div class="tool-card">
+          <h2>Calculadora de Juros Compostos</h2>
+          <div class="form-group">
+            <label for="principal">Valor Inicial (R$):</label>
+            <input type="number" id="principal" placeholder="Ex: 1000" />
+          </div>
+          <div class="form-group">
+            <label for="rate">Taxa de Juros Mensal (%):</label>
+            <input type="number" id="rate" placeholder="Ex: 0.5" step="0.01" />
+          </div>
+          <div class="form-group">
+            <label for="time">Tempo (meses):</label>
+            <input type="number" id="time" placeholder="Ex: 12" />
+          </div>
+          <button class="action-btn" onclick="calculateCompound()">
+            Calcular Futuro
+          </button>
+          <div id="financial-result" class="result-box"></div>
+        </div>
+        <article class="seo-content">
+          <h3>O Poder dos Juros Compostos</h3>
+          <p>
+            Albert Einstein chamou os juros compostos de "a oitava maravilha do
+            mundo". Diferente dos juros simples, aqui o rendimento gera mais
+            rendimento. Use esta ferramenta para projetar seus investimentos a
+            longo prazo.
+          </p>
+        </article>
+      </section>
     </main>
 
     <!-- Espaço para Anúncio -->
     <div class="ad-container">
-      <p style="font-size: 12px; color: #888">Publicidade</p>
+      <p>Publicidade</p>
       <!-- Insira o código do bloco de anúncios aqui -->
     </div>
 

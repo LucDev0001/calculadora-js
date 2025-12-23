@@ -1,3 +1,19 @@
+// --- Lógica de Abas ---
+function openTab(tabName) {
+  // Esconde todos os conteúdos
+  const contents = document.querySelectorAll(".tab-content");
+  contents.forEach((content) => content.classList.remove("active"));
+
+  // Remove classe active dos botões
+  const buttons = document.querySelectorAll(".tab-btn");
+  buttons.forEach((btn) => btn.classList.remove("active"));
+
+  // Mostra o conteúdo selecionado e ativa o botão
+  document.getElementById(tabName).classList.add("active");
+  event.currentTarget.classList.add("active");
+}
+
+// --- Calculadora Padrão ---
 let display = document.getElementById("display");
 
 function appendToDisplay(value) {
@@ -18,4 +34,111 @@ function calculate() {
   } catch {
     display.innerText = "Erro";
   }
+}
+
+// --- Conversor de Moedas ---
+function convertCurrency() {
+  const amount = parseFloat(document.getElementById("amount").value);
+  const from = document.getElementById("currency-from").value;
+  const to = document.getElementById("currency-to").value;
+  const resultDiv = document.getElementById("currency-result");
+
+  if (isNaN(amount)) {
+    resultDiv.innerText = "Por favor, insira um valor válido.";
+    return;
+  }
+
+  // Taxas fixas aproximadas (Ideal seria usar uma API)
+  const rates = {
+    BRL: 1,
+    USD: 0.2, // 1 BRL = 0.20 USD
+    EUR: 0.18, // 1 BRL = 0.18 EUR
+  };
+
+  // Lógica de conversão baseada em BRL
+  // Se converter USD para EUR: USD -> BRL -> EUR
+
+  let valInBrl = 0;
+
+  if (from === "BRL") valInBrl = amount;
+  else if (from === "USD") valInBrl = amount * 5.0; // Exemplo: 1 USD = 5 BRL
+  else if (from === "EUR") valInBrl = amount * 5.4; // Exemplo: 1 EUR = 5.40 BRL
+
+  let finalVal = 0;
+  if (to === "BRL") finalVal = valInBrl;
+  else if (to === "USD") finalVal = valInBrl / 5.0;
+  else if (to === "EUR") finalVal = valInBrl / 5.4;
+
+  resultDiv.innerText = `${amount} ${from} = ${finalVal.toFixed(2)} ${to}`;
+}
+
+// --- Calculadora CLT 2024 (Simplificada) ---
+function calculateCLT() {
+  const salary = parseFloat(document.getElementById("salary").value);
+  const dependents = parseInt(document.getElementById("dependents").value) || 0;
+  const resultDiv = document.getElementById("clt-result");
+
+  if (isNaN(salary)) {
+    resultDiv.innerText = "Insira o salário bruto.";
+    return;
+  }
+
+  // 1. Cálculo INSS (Progressivo 2024)
+  let inss = 0;
+  if (salary <= 1412.0) inss = salary * 0.075;
+  else if (salary <= 2666.68) inss = 1412 * 0.075 + (salary - 1412) * 0.09;
+  else if (salary <= 4000.03)
+    inss = 1412 * 0.075 + (2666.68 - 1412) * 0.09 + (salary - 2666.68) * 0.12;
+  else if (salary <= 7786.02)
+    inss =
+      1412 * 0.075 +
+      (2666.68 - 1412) * 0.09 +
+      (4000.03 - 2666.68) * 0.12 +
+      (salary - 4000.03) * 0.14;
+  else inss = 908.85; // Teto
+
+  // 2. Base IRRF
+  const deductionPerDependent = 189.59 * dependents;
+  const baseIRRF = salary - inss - deductionPerDependent;
+
+  // 3. Cálculo IRRF
+  let irrf = 0;
+  if (baseIRRF <= 2259.2) irrf = 0;
+  else if (baseIRRF <= 2826.65) irrf = baseIRRF * 0.075 - 169.44;
+  else if (baseIRRF <= 3751.05) irrf = baseIRRF * 0.15 - 381.44;
+  else if (baseIRRF <= 4664.68) irrf = baseIRRF * 0.225 - 662.77;
+  else irrf = baseIRRF * 0.275 - 896.0;
+
+  if (irrf < 0) irrf = 0;
+
+  const netSalary = salary - inss - irrf;
+
+  resultDiv.innerHTML = `
+    <strong>Salário Bruto:</strong> R$ ${salary.toFixed(2)}<br>
+    <strong>Desconto INSS:</strong> R$ ${inss.toFixed(2)}<br>
+    <strong>Desconto IRRF:</strong> R$ ${irrf.toFixed(2)}<br>
+    <strong>Salário Líquido:</strong> R$ ${netSalary.toFixed(2)}
+  `;
+}
+
+// --- Calculadora Financeira (Juros Compostos) ---
+function calculateCompound() {
+  const P = parseFloat(document.getElementById("principal").value);
+  const i = parseFloat(document.getElementById("rate").value) / 100;
+  const t = parseFloat(document.getElementById("time").value);
+  const resultDiv = document.getElementById("financial-result");
+
+  if (isNaN(P) || isNaN(i) || isNaN(t)) {
+    resultDiv.innerText = "Preencha todos os campos.";
+    return;
+  }
+
+  const M = P * Math.pow(1 + i, t);
+  const interest = M - P;
+
+  resultDiv.innerHTML = `
+    <strong>Total Final:</strong> R$ ${M.toFixed(2)}<br>
+    <strong>Total Investido:</strong> R$ ${P.toFixed(2)}<br>
+    <strong>Total em Juros:</strong> R$ ${interest.toFixed(2)}
+  `;
 }
