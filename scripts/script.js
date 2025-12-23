@@ -201,25 +201,6 @@ function calculateCompound() {
   `;
 }
 
-// --- Modals (Política, Termos, etc) ---
-function openModal(modalId) {
-  const modal = document.getElementById(modalId);
-  if (modal) {
-    modal.classList.remove("hidden");
-    modal.classList.add("flex");
-    document.body.style.overflow = "hidden"; // Previne rolagem do fundo
-  }
-}
-
-function closeModal(modalId) {
-  const modal = document.getElementById(modalId);
-  if (modal) {
-    modal.classList.add("hidden");
-    modal.classList.remove("flex");
-    document.body.style.overflow = "auto"; // Restaura rolagem
-  }
-}
-
 // --- Compartilhamento WhatsApp ---
 function shareOnWhatsApp(toolName) {
   const url = "https://calc-lucdev.netlify.app/";
