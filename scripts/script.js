@@ -1,16 +1,22 @@
 // --- Lógica de Abas ---
-function openTab(tabName) {
+function openTab(tabName, btnElement) {
   // Esconde todos os conteúdos
-  const contents = document.querySelectorAll(".tab-content");
-  contents.forEach((content) => content.classList.remove("active"));
+  document.querySelectorAll(".tab-content").forEach((content) => {
+    content.classList.add("hidden");
+  });
 
-  // Remove classe active dos botões
-  const buttons = document.querySelectorAll(".tab-btn");
-  buttons.forEach((btn) => btn.classList.remove("active"));
+  // Reseta estilo de todos os botões
+  document.querySelectorAll(".tab-btn").forEach((btn) => {
+    btn.classList.remove("bg-orange-500", "text-white", "shadow-md");
+    btn.classList.add("bg-gray-200", "text-gray-600");
+  });
 
   // Mostra o conteúdo selecionado e ativa o botão
-  document.getElementById(tabName).classList.add("active");
-  event.currentTarget.classList.add("active");
+  document.getElementById(tabName).classList.remove("hidden");
+
+  // Ativa o botão clicado
+  btnElement.classList.remove("bg-gray-200", "text-gray-600");
+  btnElement.classList.add("bg-orange-500", "text-white", "shadow-md");
 }
 
 // --- Calculadora Padrão ---
