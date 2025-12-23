@@ -193,3 +193,18 @@ function shareOnWhatsApp(toolName) {
   const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
 }
+
+// --- Copiar Resultado ---
+function copyToClipboard(elementId) {
+  const element = document.getElementById(elementId);
+  if (element) {
+    navigator.clipboard
+      .writeText(element.innerText)
+      .then(() => {
+        alert("Resultado copiado para a área de transferência!");
+      })
+      .catch((err) => {
+        console.error("Erro ao copiar: ", err);
+      });
+  }
+}
